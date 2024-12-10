@@ -14,15 +14,40 @@ struct Customer{
     string order;
 };
 
+void read_file(string fname, vector<string> &vec);
+
 int main(){
-    ifstream fin("names.txt");
+    // Database variables
     vector<string> names;
-    while(fin.good()){
-        string buf;
-        
-    }
-    
+    vector<string> coffee_orders;
+    vector<string> muffin_orders;
+    vector<string> bracelet_orders;
+    vector<string> pizza_orders;
+
+    // Read data files into variables
+    read_file("names.txt", names);
+    read_file("coffee.txt", coffee_orders);
+    read_file("muffin.txt", muffin_orders);
+    read_file("bracelet.txt", bracelet_orders);
+    read_file("pizza.txt", pizza_orders);
+
+    // Structs
     list<Customer> coffee_booth;
 
     return 0;
 }
+
+void read_file(string fname, vector<string> &data)
+{
+    ifstream fin(fname);
+    if (!fin.good()){
+        cout << "Failed to open file <" << fname << ">";
+        return;
+    }
+    while(fin.good()){
+        string buf;
+        getline(fin, buf);
+        data.push_back(buf);
+    }
+}
+
