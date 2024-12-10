@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <array>
 #include <fstream>
 #include <random>
 #include <deque>
@@ -31,7 +30,7 @@ public:
     ~LinkedList() {
         if (!head) return;
 
-        Node *prev, *curr = head;
+        Node *prev = head, *curr = head;
         while (curr){
             curr = curr->next;
             delete prev;
@@ -61,7 +60,21 @@ public:
 
     bool empty() {return !head;}
 
+    struct Iterator {
+        Node* curr;
 
+        Iterator(Node* node) {curr = node;}
+
+        Customer& operator*() { return curr->value; }
+        Iterator& operator++() {
+            curr = curr->next;
+            return *this;
+        }
+        bool operator!=(const Iterator& other) const { return curr != other.curr; }
+    };
+
+    Iterator begin() { return Iterator(head); }
+    Iterator end() { return Iterator(nullptr); }
 };
 
 void read_file(string fname, vector<string> &vec);
