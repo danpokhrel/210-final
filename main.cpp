@@ -23,11 +23,38 @@ private:
         Node (Customer val) {value = val; next = nullptr;}
     };
 
-    
+    Node *head;
 
 public:
-    void pop_front();
-    void push_back(Customer val);
+    LinkedList() {head = nullptr;}
+    ~LinkedList() {
+        if (!head) return;
+
+        Node *prev = head, *curr = head->next;
+        while (curr){
+            delete prev;
+        }
+    }
+
+    void push_back(Customer val){
+        Node *new_node = new Node(val);
+        if (!head)
+            head = new_node;
+        else{
+            Node *curr = head;
+            while (curr->next){
+                curr = curr->next;
+            }
+            curr->next = new_node;
+        }
+    }
+
+    void pop_front(){
+        if (!head) return;
+        Node *prev = head;
+        head = head->next;
+        delete prev;
+    }
 };
 
 void read_file(string fname, vector<string> &vec);
