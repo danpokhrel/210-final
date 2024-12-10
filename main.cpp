@@ -7,7 +7,7 @@
 #include <random>
 using namespace std;
 
-const int SIM_ROUNDS = 10, STARTING = 300, JOIN_PROB = 50;
+const int SIM_ROUNDS = 10, STARTING = 3, JOIN_PROB = 50;
 
 struct Customer{
     string name;
@@ -16,6 +16,9 @@ struct Customer{
 
 void read_file(string fname, vector<string> &vec);
 string pick_random(vector<string> &vec);
+bool probability(int percent);
+
+void print_list(list<Customer> &booth);
 
 int main(){
     srand(time(0));
@@ -40,8 +43,13 @@ int main(){
     // Initialize
     for (int i = 0; i < STARTING; i++){
         // generate random customer
-        Customer customer = {pick_random(names), pick_random(coffee_orders)};
-        coffee_booth.push_back(customer);
+        string name = pick_random(names), order = pick_random(coffee_orders);
+        coffee_booth.push_back({name, order});
+    }
+    
+    // Simulate
+    for (int i = 0; i < SIM_ROUNDS; i++){
+
     }
 
     return 0;
@@ -64,6 +72,13 @@ void read_file(string fname, vector<string> &data)
 string pick_random(vector<string> &vec)
 {
     int i = rand() % vec.size();
-    cout << vec[i] << endl;
     return vec[i];
+}
+
+void print_list(list<Customer> &booth)
+{
+    cout << "Coffee Booth:\n";
+    for (auto customer : booth)
+        cout << " > " << customer.name << " - " << customer.order << endl;
+    cout << endl;
 }
