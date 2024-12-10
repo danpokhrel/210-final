@@ -55,7 +55,7 @@ int main(){
         coffee_booth.push_back({pick_random(names), pick_random(coffee_orders)});
         muffin_booth.push_back({pick_random(names), pick_random(muffin_orders)});
         bracelet_booth.push_back({pick_random(names), pick_random(bracelet_orders)});
-        pizza_booth[i] = {pick_random(names), pick_random(pizza_orders)};
+        pizza_booth[i+1] = {pick_random(names), pick_random(pizza_orders)};
     }
     cout << "--- Initial Booths ---\n";
     print_booths(coffee_booth, muffin_booth, bracelet_booth, pizza_booth);
@@ -81,10 +81,15 @@ int main(){
             bracelet_booth.push_back({pick_random(names), pick_random(bracelet_orders)});
 
         // pizza booth
+        int x = 0; // key
         if (!pizza_booth.empty()){ // Serve customer at front
-            // Find largest key
-            int x = 
+            // Find smallest key for deletion
+            pizza_booth.erase(pizza_booth.begin());
+            // Find largest key for insertion
+            x = pizza_booth.rbegin()->first;
         }
+        if (probability(JOIN_PROB))
+            pizza_booth[x+1] = {pick_random(names), pick_random(pizza_orders)};
         
         cout << "--- Iteration " << i+1 << " ---\n";
         print_booths(coffee_booth, muffin_booth, bracelet_booth, pizza_booth);
@@ -120,9 +125,9 @@ bool probability(int percent)
 
 void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Customer> &booth3, map<int, Customer> &booth4)
 {
-    print_list(booth1);
-    print_deque(booth2);
-    print_vector(booth3);
+    //print_list(booth1);
+    //print_deque(booth2);
+    //print_vector(booth3);
     print_map(booth4);
     cout << endl;
 }
