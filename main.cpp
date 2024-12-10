@@ -19,9 +19,10 @@ void read_file(string fname, vector<string> &vec);
 string pick_random(vector<string> &vec);
 bool probability(int percent);
 
-void print_booths(list<Customer> &booth1, deque<Customer> &booth2);
+void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Customer> &booth3);
 void print_list(list<Customer> &booth);
 void print_deque(deque<Customer> &booth);
+void print_vector(vector<Customer> &booth);
 
 int main(){
     srand(time(0));
@@ -43,15 +44,17 @@ int main(){
     // Structs
     list<Customer> coffee_booth;
     deque<Customer> muffin_booth;
+    vector<Customer> bracelet_booth;
 
     // Initialize
     for (int i = 0; i < STARTING; i++){
         // generate random customers
         coffee_booth.push_back({pick_random(names), pick_random(coffee_orders)});
         muffin_booth.push_back({pick_random(names), pick_random(muffin_orders)});
+        bracelet_booth.push_back({pick_random(names), pick_random(bracelet_orders)});
     }
     cout << "--- Initial Booths ---\n";
-    print_booths(coffee_booth, muffin_booth);
+    print_booths(coffee_booth, muffin_booth, bracelet_booth);
     
     // Simulate
     for (int i = 0; i < SIM_ROUNDS; i++){
@@ -60,14 +63,21 @@ int main(){
             coffee_booth.pop_front();
         if (probability(JOIN_PROB))
             coffee_booth.push_back({pick_random(names), pick_random(coffee_orders)});
-        
+
+        // muffin booth
         if (!muffin_booth.empty()) // Serve customer at front
             muffin_booth.pop_front();
         if (probability(JOIN_PROB))
             muffin_booth.push_back({pick_random(names), pick_random(muffin_orders)});
+            
+        // bracelet booth
+        if (!bracelet_booth.empty()) // Serve customer at front
+            bracelet_booth.erase(bracelet_booth.begin());
+        if (probability(JOIN_PROB))
+            bracelet_booth.push_back({pick_random(names), pick_random(bracelet_orders)});
         
         cout << "--- Iteration " << i+1 << " ---\n";
-        print_booths(coffee_booth, muffin_booth);
+        print_booths(coffee_booth, muffin_booth, bracelet_booth);
     }
 
     return 0;
@@ -98,10 +108,11 @@ bool probability(int percent)
     return rand()%100+1 <= percent;
 }
 
-void print_booths(list<Customer> &booth1, deque<Customer> &booth2)
+void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Customer> &booth3)
 {
     print_list(booth1);
     print_deque(booth2);
+    print_vector(booth3);
     cout << endl;
 }
 
@@ -115,6 +126,13 @@ void print_list(list<Customer> &booth)
 void print_deque(deque<Customer> &booth)
 {
     cout << "Muffin Booth:\n";
+    for (auto customer : booth)
+        cout << " > " << customer.name << " - " << customer.order << endl;
+}
+
+void print_vector(vector<Customer> &booth)
+{
+    cout << "Bracelet Booth:\n";
     for (auto customer : booth)
         cout << " > " << customer.name << " - " << customer.order << endl;
 }
