@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <random>
+#include <deque>
 using namespace std;
 
 const int SIM_ROUNDS = 10, STARTING = 3, JOIN_PROB = 50;
@@ -18,7 +19,9 @@ void read_file(string fname, vector<string> &vec);
 string pick_random(vector<string> &vec);
 bool probability(int percent);
 
+void print_booths(list<Customer> &booth1, deque<Customer> &booth2);
 void print_list(list<Customer> &booth);
+void print_deque(deque<Customer> &booth);
 
 int main(){
     srand(time(0));
@@ -39,25 +42,32 @@ int main(){
 
     // Structs
     list<Customer> coffee_booth;
+    deque<Customer> muffin_booth;
 
     // Initialize
     for (int i = 0; i < STARTING; i++){
-        // generate random customer
-        string name = pick_random(names), order = pick_random(coffee_orders);
-        coffee_booth.push_back({name, order});
+        // generate random customers
+        coffee_booth.push_back({pick_random(names), pick_random(coffee_orders)});
+        muffin_booth.push_back({pick_random(names), pick_random(muffin_orders)});
     }
     cout << "--- Initial Booths ---\n";
-    print_list(coffee_booth);
+    print_booths(coffee_booth, muffin_booth);
     
     // Simulate
     for (int i = 0; i < SIM_ROUNDS; i++){
+        // coffee booth
         if (!coffee_booth.empty()) // Serve customer at front
             coffee_booth.pop_front();
         if (probability(JOIN_PROB))
             coffee_booth.push_back({pick_random(names), pick_random(coffee_orders)});
         
-        cout << "--- Iteration " << i << " ---\n";
-        print_list(coffee_booth);
+        if (!muffin_booth.empty()) // Serve customer at front
+            muffin_booth.pop_front();
+        if (probability(JOIN_PROB))
+            muffin_booth.push_back({pick_random(names), pick_random(muffin_orders)});
+        
+        cout << "--- Iteration " << i+1 << " ---\n";
+        print_booths(coffee_booth, muffin_booth);
     }
 
     return 0;
@@ -88,10 +98,23 @@ bool probability(int percent)
     return rand()%100+1 <= percent;
 }
 
+void print_booths(list<Customer> &booth1, deque<Customer> &booth2)
+{
+    print_list(booth1);
+    print_deque(booth2);
+    cout << endl;
+}
+
 void print_list(list<Customer> &booth)
 {
     cout << "Coffee Booth:\n";
     for (auto customer : booth)
         cout << " > " << customer.name << " - " << customer.order << endl;
-    cout << endl;
+}
+
+void print_deque(deque<Customer> &booth)
+{
+    cout << "Muffin Booth:\n";
+    for (auto customer : booth)
+        cout << " > " << customer.name << " - " << customer.order << endl;
 }
