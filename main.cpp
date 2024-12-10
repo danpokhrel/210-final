@@ -83,7 +83,6 @@ int main(){
         // pizza booth
         int x = 0; // key
         if (!pizza_booth.empty()){ // Serve customer at front
-            // Find smallest key for deletion
             pizza_booth.erase(pizza_booth.begin());
             // Find largest key for insertion
             x = pizza_booth.rbegin()->first;
@@ -125,15 +124,19 @@ bool probability(int percent)
 
 void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Customer> &booth3, map<int, Customer> &booth4)
 {
-    //print_list(booth1);
-    //print_deque(booth2);
-    //print_vector(booth3);
+    print_list(booth1);
+    print_deque(booth2);
+    print_vector(booth3);
     print_map(booth4);
     cout << endl;
 }
 
 void print_list(list<Customer> &booth)
 {
+    if (booth.empty()){
+        cout << "<Coffee Booth Empty>\n";
+        return;
+    }
     cout << "Coffee Booth:\n";
     for (auto customer : booth)
         cout << " > " << customer.name << " - " << customer.order << endl;
@@ -141,6 +144,10 @@ void print_list(list<Customer> &booth)
 
 void print_deque(deque<Customer> &booth)
 {
+    if (booth.empty()){
+        cout << "<Muffin Booth Empty>\n";
+        return;
+    }
     cout << "Muffin Booth:\n";
     for (auto customer : booth)
         cout << " > " << customer.name << " - " << customer.order << endl;
@@ -148,6 +155,10 @@ void print_deque(deque<Customer> &booth)
 
 void print_vector(vector<Customer> &booth)
 {
+    if (booth.empty()){
+        cout << "<Bracelet Booth Empty>\n";
+        return;
+    }
     cout << "Bracelet Booth:\n";
     for (auto customer : booth)
         cout << " > " << customer.name << " - " << customer.order << endl;
@@ -155,7 +166,11 @@ void print_vector(vector<Customer> &booth)
 
 void print_map(map<int, Customer> &booth)
 {
+    if (booth.empty()){
+        cout << "<Pizza Booth Empty>\n";
+        return;
+    }
     cout << "Pizza Booth:\n";
     for (auto pair : booth)
-        cout << " > " << pair.first << " | " << pair.second.name << " - " << pair.second.order << endl;
+        cout << " > " << pair.second.name << " - " << pair.second.order << endl;
 }
