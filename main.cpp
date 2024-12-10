@@ -46,10 +46,18 @@ int main(){
         string name = pick_random(names), order = pick_random(coffee_orders);
         coffee_booth.push_back({name, order});
     }
+    cout << "--- Initial Booths ---\n";
+    print_list(coffee_booth);
     
     // Simulate
     for (int i = 0; i < SIM_ROUNDS; i++){
-
+        if (!coffee_booth.empty()) // Serve customer at front
+            coffee_booth.pop_front();
+        if (probability(JOIN_PROB))
+            coffee_booth.push_back({pick_random(names), pick_random(coffee_orders)});
+        
+        cout << "--- Iteration " << i << " ---\n";
+        print_list(coffee_booth);
     }
 
     return 0;
@@ -73,6 +81,11 @@ string pick_random(vector<string> &vec)
 {
     int i = rand() % vec.size();
     return vec[i];
+}
+
+bool probability(int percent)
+{
+    return rand()%100+1 <= percent;
 }
 
 void print_list(list<Customer> &booth)
