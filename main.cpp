@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <array>
 #include <fstream>
 #include <random>
 #include <deque>
@@ -30,9 +31,11 @@ public:
     ~LinkedList() {
         if (!head) return;
 
-        Node *prev = head, *curr = head->next;
+        Node *prev, *curr = head;
         while (curr){
+            curr = curr->next;
             delete prev;
+            prev = curr;
         }
     }
 
@@ -55,14 +58,18 @@ public:
         head = head->next;
         delete prev;
     }
+
+    bool empty() {return !head;}
+
+
 };
 
 void read_file(string fname, vector<string> &vec);
 string pick_random(vector<string> &vec);
 bool probability(int percent);
 
-void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Customer> &booth3, map<int, Customer> &booth4);
-void print_list(list<Customer> &booth);
+void print_booths(LinkedList &booth1, deque<Customer> &booth2, vector<Customer> &booth3, map<int, Customer> &booth4);
+void print_list(LinkedList &booth);
 void print_deque(deque<Customer> &booth);
 void print_vector(vector<Customer> &booth);
 void print_map(map<int, Customer> &booth);
@@ -85,7 +92,7 @@ int main(){
     read_file("pizza.txt", pizza_orders);
 
     // Structs
-    list<Customer> coffee_booth;
+    LinkedList coffee_booth;
     deque<Customer> muffin_booth;
     vector<Customer> bracelet_booth;
     map<int, Customer> pizza_booth;
@@ -163,7 +170,7 @@ bool probability(int percent)
     return rand()%100+1 <= percent;
 }
 
-void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Customer> &booth3, map<int, Customer> &booth4)
+void print_booths(LinkedList &booth1, deque<Customer> &booth2, vector<Customer> &booth3, map<int, Customer> &booth4)
 {
     print_list(booth1);
     print_deque(booth2);
@@ -172,7 +179,7 @@ void print_booths(list<Customer> &booth1, deque<Customer> &booth2, vector<Custom
     cout << endl;
 }
 
-void print_list(list<Customer> &booth)
+void print_list(LinkedList &booth)
 {
     if (booth.empty()){
         cout << "<Coffee Booth Empty>\n";
