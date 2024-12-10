@@ -1,6 +1,5 @@
 // COMSC-210 | Final | Dan Pokhrel
 #include <iostream>
-#include <list>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -14,6 +13,21 @@ const int SIM_ROUNDS = 10, STARTING = 3, JOIN_PROB = 50;
 struct Customer{
     string name;
     string order;
+};
+
+class LinkedList{
+private:
+    struct Node{
+        Customer value;
+        Node* next;
+        Node (Customer val) {value = val; next = nullptr;}
+    };
+
+    
+
+public:
+    void pop_front();
+    void push_back(Customer val);
 };
 
 void read_file(string fname, vector<string> &vec);
