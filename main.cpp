@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <random>
 using namespace std;
 
-const int SIM_ROUNDS = 10;
-const int JOIN_PROB = 50;
+const int SIM_ROUNDS = 10, STARTING = 300, JOIN_PROB = 50;
 
 struct Customer{
     string name;
@@ -15,8 +15,11 @@ struct Customer{
 };
 
 void read_file(string fname, vector<string> &vec);
+string pick_random(vector<string> &vec);
 
 int main(){
+    srand(time(0));
+
     // Database variables
     vector<string> names;
     vector<string> coffee_orders;
@@ -33,6 +36,13 @@ int main(){
 
     // Structs
     list<Customer> coffee_booth;
+
+    // Initialize
+    for (int i = 0; i < STARTING; i++){
+        // generate random customer
+        Customer customer = {pick_random(names), pick_random(coffee_orders)};
+        coffee_booth.push_back(customer);
+    }
 
     return 0;
 }
@@ -51,3 +61,9 @@ void read_file(string fname, vector<string> &data)
     }
 }
 
+string pick_random(vector<string> &vec)
+{
+    int i = rand() % vec.size();
+    cout << vec[i] << endl;
+    return vec[i];
+}

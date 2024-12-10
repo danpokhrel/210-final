@@ -1,0 +1,8 @@
+Latte
+Cappuccino
+Americano
+Espresso
+Mocha
+Macchiato
+Flat White
+Iced Coffee
